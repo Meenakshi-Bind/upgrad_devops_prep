@@ -1,0 +1,28 @@
+master devops/.DS_Store
+Practise/.DS_Store
+mastering AWS/.DS_Store
+master devops/IAC & Terraform/.DS_Store
+master devops/Basics devops , git and Docker/.DS_Store
+Practise/Terraform Practise/.terraform.lock.hcl
+Practise/Terraform Practise/.terraform/terraform.tfstate
+Practise/Terraform Practise/.terraform/modules/modules.json
+Practise/Terraform Practise/.terraform/providers/registry.terraform.io/hashicorp/aws/5.76.0/darwin_arm64/LICENSE.txt
+Practise/Terraform Practise/.terraform/providers/registry.terraform.io/hashicorp/aws/5.76.0/darwin_arm64/terraform-provider-aws_v5.76.0_x5
+Practise/terraform_task/.terraform.lock.hcl
+Practise/terraform_task/defaultvalues.auto.tfvars
+Practise/terraform_task/sshkey-my-generated-key
+Practise/terraform_task/.terraform/terraform.tfstate
+Practise/terraform_task/.terraform/modules/modules.json
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/aws/5.77.0/darwin_arm64/LICENSE.txt
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/aws/5.77.0/darwin_arm64/terraform-provider-aws_v5.77.0_x5
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/http/3.4.5/darwin_arm64/LICENSE.txt
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/http/3.4.5/darwin_arm64/terraform-provider-http_v3.4.5_x5
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/local/2.5.2/darwin_arm64/LICENSE.txt
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/local/2.5.2/darwin_arm64/terraform-provider-local_v2.5.2_x5
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/tls/4.0.6/darwin_arm64/LICENSE.txt
+CICD/Summary+Notes_+CI_CD+on+AWS.pdf
+CICD/Summary+notes_+Infrastructure+as+Code(IaC)+on+AWS.pdf
+Practise/terraform_task/sshkey-my-generated-key
+Practise/terraform_task/.terraform/providers/registry.terraform.io/hashicorp/tls/4.0.6/darwin_arm64/terraform-provider-tls_v4.0.6_x5
+task-resources/.DS_Store
+task-resources/upg-loadme-app/package.json
