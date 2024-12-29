@@ -1,0 +1,118 @@
+
+DOCKER
+
+sudo apt update
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+
+apt-cache policy docker-ce
+
+sudo apt install docker-ce
+
+sudo usermod -aG docker ${USER}
+
+KUBECTL LINUX
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+kubectl version --client
+
+MINIKUBE
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+
+minikube start
+
+AWSCLI
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+apt install unzip
+
+unzip awscliv2.zip
+
+sudo ./aws/install
+
+eksctl
+
+# for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+
+# (Optional) Verify checksum
+curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+
+sudo mv /tmp/eksctl /usr/local/bin
+
+sudo apt install graphviz
+
+
+
+
+running command to see service
+
+create cluster - eksctl create cluster -f filename 
+
+namespace isolated workspace - kubectl create ns local
+
+to apply all the changes which you made in file - kubectl apply -f filename -n local
+
+check whether pods are created or not (smallest deployeable unit) - kubectl get pods -n local
+
+see the svc where you application running basically creating loadbalacer - kubectl get svc -n local
+
+
+dipesh017/demo:worker
+
+dipesh017/demo:result
+
+postgres:9.6
+
+
+ANSIBLE
+
+sudo apt-add-repository ppa:ansible/ansible
+
+sudo apt-get update 
+
+sudo apt-get install ansible
+
+
+BOTO3
+
+sudo apt install pipx
+
+pipx install boto3
+
+sudo apt install python3-boto3
+
+METRIC SERVER
+
+kubectl get deployment metrics-server -n kube-system
+
+
+HELM 
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+
+chmod 700 get_helm.sh
+
+./get_helm.sh

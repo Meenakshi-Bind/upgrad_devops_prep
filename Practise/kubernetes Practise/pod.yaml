@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vote
+  template:
+    metadata:
+      name: vote
+      labels: 
+        app: vote
+    spec:
+      containers:
+        - name: vote
+          image: meenakshiupgrad/mbd12:vote
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote
+spec:
+  type: LoadBalancer
+  selector:
+    app: vote
+  ports:
+  - port: 80
+    targetPort: 80
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      name: result
+      labels: 
+        app: result
+    spec:
+      containers:
+        - name: result
+          image: dipesh017/demo:result
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: result
+spec:
+  type: LoadBalancer
+  selector:
+    app: result
+  ports:
+  - port: 8081
+    targetPort: 80
+
+
+---
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      name: redis
+      labels: 
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  type: ClusterIP
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: worker
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - image: dipesh017/demo:worker
+        name: worker
+
+---    
+
+
+# kubectl create ns local
+
+# kubectl apply -f filename -n local
+
+# kubectl get pods -n local
+
+# kubectl get svc -n local
+
+
+# dipesh017/demo:worker
+
+# dipesh017/demo:result
+
+# postgres:9.6

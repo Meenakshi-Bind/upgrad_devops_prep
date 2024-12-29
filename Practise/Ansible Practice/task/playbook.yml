@@ -1,0 +1,35 @@
+---
+- name: check shell command
+  hosts: aws_ec2
+  become: true
+  tasks:
+    - name: copy file
+      copy:
+        src: nginx.sh
+        dest: /home/ubuntu/nginx.sh
+        mode: 0755
+    - name: execute file using shell
+      ansible.builtin.shell: sudo sh nginx.sh
+    - name: remove file on remote using command
+      ansible.builtin.command: 
+        cmd: sudo rm /home/ubuntu/nginx.sh 
+    - name: Get list of running processes
+      ansible.builtin.shell: ps aux
+      register: process_list
+
+    - name: Display running processes
+      debug:
+        var: process_list.stdout_lines
+    - name: Add a user
+      ansible.builtin.user:
+        name: meenakshi
+        state: present  # Ensures the user is created
+        shell: /bin/bash
+        home: /home/meenakshi
+        groups: sudo  # Add the user to the sudo group
+
+    - name: Delete a user
+      ansible.builtin.user:
+        name: tempuser
+        state: absent  # Ensures the user is removed
+        remove: true  # Removes the user's home directory and mail spool

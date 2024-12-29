@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: vote
+  template:
+    metadata:
+      name: vote
+      labels: 
+        app: vote
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - critical
+      tolerations:
+      - key: "app"
+        operator: "Equal"
+        value: "critical"
+        effect: "NoSchedule"
+      containers:
+        - name: vote
+          image: dipesh017/demo:vote
+          
+          
+# kubectl taint node ip-192-168-22-62.ec2.internal app=critical:NoSchedule
+
+# kubectl label node ip-192-168-22-62.ec2.internal app=critical
+
+
+# on demand machine will start rejecting all the pods except some special pods
+# special pods need to be communicated - they need to go on ondemand instance only
+
+# qa machine will start rejecting all the pods except some qa pods
+# qa pods need to be communicated - they need to go on qa instance only
+
+
+
+# we need to apply TAINT on the machine - a tainted machine will start rejecting all the pods except TOLERATED pod
+# we need to apply TOLERATION on the pods
+# we need to apply LABEL on the machine
+# we need to apply AFFINITY on the pods specifying LABEL

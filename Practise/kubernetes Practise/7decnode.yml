@@ -1,0 +1,18 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: upgrad-eks-mbd12
+  region: us-east-1
+nodeGroups:
+  - name: worker-nodes
+    instanceType: t3.small
+    desiredCapacity: 2
+  - name: worker-nodes-spot
+    minSize: 2
+    maxSize: 5
+    instancesDistribution:
+      maxPrice: 0.017
+      instanceTypes: ["t3.large", "t3.medium"]
+      onDemandBaseCapacity: 0
+      onDemandPercentageAboveBaseCapacity: 0
+      spotInstancePools: 2

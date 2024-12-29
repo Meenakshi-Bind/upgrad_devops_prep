@@ -1,0 +1,39 @@
+ubuntu@ip-172-31-36-112:~$ cat prom.yaml
+server:
+  persistentVolume:
+    storageClass: aws-ebs
+
+ubuntu@ip-172-31-36-112:~$
+ubuntu@ip-172-31-36-112:~$
+ubuntu@ip-172-31-36-112:~$ cat grafana.yaml
+replicas: 2
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 5
+  targetCPU: "60"
+  targetMemory: ""
+
+service:
+  enabled: true
+  type: LoadBalancer
+persistence:
+  type: pvc
+  enabled: true
+  storageClassName: aws-ebs
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+adminUser: admin
+adminPassword: strongpassword
+ubuntu@ip-172-31-36-112:~$ cat sc.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: aws-ebs
+provisioner: kubernetes.io/aws-ebs
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+
+ubuntu@ip-172-31-36-112:~$

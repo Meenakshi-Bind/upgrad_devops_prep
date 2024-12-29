@@ -1,0 +1,33 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: aws-ebs
+provisioner: kubernetes.io/aws-ebs
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+---
+replicas: 2
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 5
+  targetCPU: "60"
+  targetMemory: ""
+
+service:
+  enabled: true
+  type: LoadBalancer
+persistence:
+  type: pvc
+  enabled: true
+  storageClassName: aws-ebs
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  
+adminUser: admin
+adminPassword: strongpassword
+
+# oidc.eks.region-code.amazonaws.com/id/EXAMPLED539D4633E53DE1B71EXAMPLE:sub": "system:serviceaccount:kube-system:ebs-csi-controller-sa"
+
+# https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus
