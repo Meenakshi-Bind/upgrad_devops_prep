@@ -28,7 +28,9 @@ variable "selfip" {
   description = "CIDR block of the VPC"
   type        = string
 }
-
+variable "instance_profile_name" {
+  type = string
+}
 
 # Bastion Host Security Group
 resource "aws_security_group" "bastion_sg" {
@@ -42,7 +44,7 @@ resource "aws_security_group" "bastion_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [format("%s/32", var.selfip)] # Replace or define as variable
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Allow all outbound traffic
@@ -58,7 +60,7 @@ resource "aws_security_group" "bastion_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [format("%s/32", var.selfip)] # Replace or define as variable
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Allow all outbound traffic
@@ -97,7 +99,39 @@ resource "aws_security_group" "private_instances_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+# Allow SSH access from self IP
+  ingress {
+    description = "Allow SSH from self IP"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
+  # Allow all outbound traffic
+  egress {
+    description = "Allow all egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "Allow HTTP traffic from self IP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound traffic
+  egress {
+    description = "Allow all egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "Private Instances SG"
   }
@@ -115,7 +149,7 @@ resource "aws_security_group" "public_web_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [format("%s/32", var.selfip)] # Replace or define as variable
+    cidr_blocks = [format("%s/32", var.selfip)] 
   }
 
   # Allow all outbound traffic
@@ -126,7 +160,39 @@ resource "aws_security_group" "public_web_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+# Allow SSH access from self IP
+  ingress {
+    description = "Allow SSH from self IP"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
+  # Allow all outbound traffic
+  egress {
+    description = "Allow all egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "Allow HTTP traffic from self IP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound traffic
+  egress {
+    description = "Allow all egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "Public Web SG"
   }
@@ -137,6 +203,7 @@ resource "aws_instance" "bastian_Ec2" {
   instance_type               = var.instanceType
   subnet_id                   = var.pubsubnetId
   key_name                    = aws_key_pair.keypair.key_name
+  iam_instance_profile = var.instance_profile_name
   associate_public_ip_address = true
   vpc_security_group_ids = [
     aws_security_group.bastion_sg.id
@@ -151,6 +218,7 @@ resource "aws_instance" "jenkins_Ec2" {
   instance_type = var.instanceType
   subnet_id     = var.pri1subnetId
   key_name      = aws_key_pair.keypair.key_name
+  iam_instance_profile = var.instance_profile_name
   vpc_security_group_ids = [
     aws_security_group.private_instances_sg.id
   ]
@@ -164,6 +232,7 @@ resource "aws_instance" "app_Ec2" {
   instance_type = var.instanceType
   subnet_id     = var.pri2subnetId
   key_name      = aws_key_pair.keypair.key_name
+  iam_instance_profile = var.instance_profile_name
   vpc_security_group_ids = [
     aws_security_group.public_web_sg.id
   ]

@@ -18,6 +18,7 @@ resource "aws_lb" "task_lb" {
   name               = "task-lb-tf"
   internal           = false
   load_balancer_type = "application"
+  security_groups    = [aws_security_group.ALB_sg.id]
   subnet_mapping {
     subnet_id     = var.public_subnet
     allocation_id = var.eip_address
@@ -54,3 +55,31 @@ resource "aws_lb_listener" "http" {
   }
 }
 
+#security group for ALB
+resource "aws_security_group" "ALB_sg" {
+  name        = "sg og ALB"
+  description = "Security group for Public Web instances"
+  vpc_id      = var.vpc_id
+
+  # Allow HTTP traffic (port 80) from self IP
+  ingress {
+    description = "Allow HTTP traffic from self IP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound traffic
+  egress {
+    description = "Allow all egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "SG for ALB"
+  }
+}

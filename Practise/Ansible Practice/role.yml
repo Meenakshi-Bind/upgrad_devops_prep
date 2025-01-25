@@ -1,0 +1,7 @@
+---
+- name: install
+  hosts:  all
+  become: true
+  roles:
+    - role: ansible-role-mysql
+      become: yes

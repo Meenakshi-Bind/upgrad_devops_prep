@@ -1,0 +1,69 @@
+pipeline {
+    agent {
+        label 'task-jenk' // Label matching the slave with Docker installed
+    }
+    environment {
+        // Replace these placeholders with actual values specific to your setup
+        ECR_REPO_URI = '230231799530.dkr.ecr.us-east-1.amazonaws.com/service/voting' // ECR repository URI
+        AWS_REGION = 'us-east-1' // AWS region
+        IMAGE_NAME = 'example-voting-app' // Docker image name
+        IMAGE_TAG = 'voting_app' // Image tag
+        APP_HOST = '23.22.156.170' // Replace with your app host IP or domain
+        SSH_USER = 'ubuntu' // SSH user
+    }
+    stages {
+        stage('Git Checkout') {
+            steps {
+                echo 'Checking out the Git repository...'
+                git branch: 'main', url: 'https://github.com/Meenakshi-Bind/upgrad-jenkins-task.git'
+            }
+        }
+        stage('Build and Push Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                sh """
+                docker build -t ${ECR_REPO_URI}:${IMAGE_TAG} ./example-voting-app/vote
+                """
+
+                echo 'Pushing Docker image to Amazon ECR...'
+                sh """
+                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI}
+                docker push ${ECR_REPO_URI}:${IMAGE_TAG}
+                """
+            }
+        }
+        stage('Deploy to App Host') {
+            steps {
+                echo 'Deploying the new container to the app host...'
+                sh """
+                # Login to ECR
+                aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_REPO_URI}
+                
+                # Pull the Docker image
+                docker pull ${ECR_REPO_URI}:${IMAGE_TAG}
+
+                # Stop and remove the old container if it exists
+                if docker ps | grep ${IMAGE_NAME}; then
+                    echo 'Stopping and removing the old container...'
+                    docker stop ${IMAGE_NAME}
+                    docker rm ${IMAGE_NAME}
+                fi
+
+                # Run the new container
+                docker run -d --name ${IMAGE_NAME} -p 80:80 ${ECR_REPO_URI}:${IMAGE_TAG}
+                """
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline execution completed!'
+        }
+        success {
+            echo 'Application deployed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
+        }
+    }
+}

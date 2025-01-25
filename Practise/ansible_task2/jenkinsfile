@@ -1,0 +1,44 @@
+pipeline {
+    agent {
+        label 'task-node' // Label matching the slave with Docker installed
+    }
+    environment {
+        ECR_REPO_URI = '230231799530.dkr.ecr.us-east-1.amazonaws.com/service/voting' // ECR repository URI
+        AWS_REGION = 'us-east-1' // AWS region
+        IMAGE_NAME = 'upgrad-jenkins-task' // Docker image name
+        IMAGE_TAG = 'latest' // Image tag
+    }
+    stages {
+        stage('Git Checkout') {
+            steps {
+                echo 'Checking out the Git repository...'
+                git branch: 'main', url: 'https://github.com/Meenakshi-Bind/upgrad-jenkins-task.git'
+            }
+        }
+        stage('Build and Push Docker Image to ECR') {
+            steps {
+                echo 'Building Docker image...'
+                sh """
+                docker build -t ${ECR_REPO_URI}:${IMAGE_TAG} .
+                """
+
+                echo 'Pushing Docker image to Amazon ECR...'
+                sh """
+                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI}
+                docker push ${ECR_REPO_URI}:${IMAGE_TAG}
+                """
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline execution completed!'
+        }
+        success {
+            echo 'Docker image pushed to ECR successfully.'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
+        }
+    }
+}

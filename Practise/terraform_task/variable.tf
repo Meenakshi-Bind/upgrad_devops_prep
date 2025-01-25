@@ -42,3 +42,7 @@ variable "ec2Type" {
   type    = string
   default = "t2.micro"
 }
+variable "iam_role_name" {
+  type    = string
+  default = "task_role"
+}

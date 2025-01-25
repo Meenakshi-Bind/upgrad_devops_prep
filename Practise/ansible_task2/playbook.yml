@@ -1,0 +1,49 @@
+- name: Install Docker on Jenkins and App Hosts
+  hosts: jenkins_hosts,app_hosts
+  become: true
+  tasks:
+    - name: Install prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+        update_cache: yes
+      register: apt_install_prereqs
+      until: apt_install_prereqs is succeeded
+      retries: 5
+      delay: 10
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+      register: apt_update_cache
+      until: apt_update_cache is succeeded
+      retries: 5
+      delay: 10
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+      register: apt_install_docker
+      until: apt_install_docker is succeeded
+      retries: 5
+      delay: 10
+
+    - name: Ensure Docker service is started
+      service:
+        name: docker
+        state: started

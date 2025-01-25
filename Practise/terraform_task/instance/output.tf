@@ -11,5 +11,5 @@ output "app_instance" {
 }
 
 output "private_key_pem" {
-  value     = tls_private_key.prikey.private_key_openssh
+  value = tls_private_key.prikey.private_key_openssh
 }
