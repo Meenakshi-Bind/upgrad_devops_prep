@@ -1,0 +1,159 @@
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookMyShow - Scalable Platform</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="logo">BookMyShow</div>
+    <nav>
+      <ul>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="hero">
+    <h1>Welcome to BookMyShow</h1>
+    <p>Your gateway to the best events around the world.</p>
+    <a href="#events" class="cta">Browse Events</a>
+  </section>
+
+  <section id="events">
+    <h2>Upcoming Events</h2>
+    <div class="event-list">
+      <!-- Events will be dynamically loaded here -->
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 BookMyShow. All rights reserved.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
+ 
+
+CSS
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+}
+
+header .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+#hero {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f5f5f5;
+}
+
+#hero h1 {
+  font-size: 2.5em;
+  margin: 0;
+}
+
+#hero .cta {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff4500;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+#events {
+  padding: 20px;
+}
+
+.event-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.event-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+}
+ 
+
+JavaScript
+document.addEventListener("DOMContentLoaded", () => {
+  const events = [
+    {
+      title: "Coldplay Concert",
+      date: "2025-01-20",
+      location: "Mumbai, India",
+    },
+    {
+      title: "Comedy Night",
+      date: "2025-01-25",
+      location: "Delhi, India",
+    },
+    {
+      title: "Art Exhibition",
+      date: "2025-02-10",
+      location: "Bangalore, India",
+    },
+  ];
+
+  const eventList = document.querySelector(".event-list");
+
+  events.forEach(event => {
+    const eventCard = document.createElement("div");
+    eventCard.classList.add("event-card");
+    eventCard.innerHTML = `
+      <h3>${event.title}</h3>
+      <p>Date: ${event.date}</p>
+      <p>Location: ${event.location}</p>
+      <button onclick="bookTicket('${event.title}')">Book Now</button>
+    `;
+    eventList.appendChild(eventCard);
+  });
+});
+
+function bookTicket(eventTitle) {
+  alert(`You have booked a ticket for ${eventTitle}!`);
+}
