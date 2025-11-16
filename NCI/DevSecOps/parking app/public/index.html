@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>EPIK</title>
+</head>
+<body>
+    <div class="block">
+        <div>
+            <h2>Valet Parking</h2>
+            <button class="sign_out"><i class="fas fa-power-off"></i> Sign Out</button>
+            
+        </div>
+        <div class="second_level">
+            <input type="text" id="myInput" class="input_value"onkeyup="myFunction()" placeholder="Search for Vehicle No.." title="Type in a name">
+
+            <button class="addContent"><i class="fas fa-plus"></i> Check In</button>
+        </div>
+        <div class="divider"></div>
+        
+        <div>
+            <table class="vehicleShow" >
+                <tbody class="table">
+                    <tr>
+                        <th>Vehicle No</th>
+                        <th>Vehicle Model</th>
+                        <th>Vehicle Type</th>
+                        <th>Phone</th>
+                        <th>Check-in</th>
+                         <th>       </th>
+                      </tr>
+                </tbody>
+                
+            </table>
+        </div>
+        
+    </div>
+    <div class="popCheckIn" style='display: none;'>
+        <h2 class="head">Vehicle Check-in</h2>
+        <div class="carInfo">
+            <form  id="form" class="validate">
+                <div class="form-field">
+                  <label for="VehicleNo">Vehicle Number</label>
+                  <input type="text" name="VehicleNo" id="VehicleNo" placeholder="TN 09 CD 2721" required />
+                </div>
+                <div class="form-field">
+                  <label for="VehicleType">Vehicle Type</label>
+                  <select name="cars" id="cars">
+                    <option value=""></option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                  <label for="VehicleModel">Vehicle Model</label>
+                  <input type="text" name="VehicleModel" id="VehicleModel" required placeholder="AUDI" />
+                </div>
+                <div class="form-field">
+                    <label for="Phoneno">Phone Number</label>
+                    <input type="email" name="Phoneno" id="Phoneno" placeholder="1234567890" required />
+                  </div>
+                  <div class="form-field">
+                    <label for="CustomerName">CustomerName</label>
+                    <input type="email" name="CustomerName" id="CustomerName" placeholder="your name" required />
+                  </div>
+                
+              </form>
+              <div class="form-field">
+                <label for=""></label>
+                <input type="submit"  class="submit" value="Check-in" />
+              </div>
+        </div>
+        
+
+    </div>
+    <div class="afterCheckOut" style='display: none;'>
+        <table class="popupCheckOut" >
+            <h2 class="CheckOOO">Checkout</h2>
+            <tbody class="POP">
+                <tr class="popCheckOut">
+                    <th>Customer Name</th>
+                    <th>Phone Number</th>
+                    <th>Vehicle Number</th>
+                    <th>Vehicle Model</th>
+                    
+                  </tr>
+                  <tr class="popCheckOut2">
+                    <th>Vehicle Type</th>
+                    <th>Check-in Time</th>
+                     <th>Check-out Time</th>
+                     <th>Duration</th>
+                  </tr>
+            </tbody>
+            <div class="Payment">
+                <p>To Pay</p>
+                <h3>Rs 80</h3>
+                <button class="Pro">Proceed To Pay</button>
+            </div>
+            
+        </table>
+    </div>
+    <div class="PaymentDone" style='display: none;'>
+        <div class="successful">
+            <span class="A">Payment Successful</span>
+            <span class="b">your car will reach our doorstep within next 5 minutes</span>
+            <button class="closeButton" >Close</button>
+        </div>
+    </div>
+    
+    <script src="./scriptdb.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

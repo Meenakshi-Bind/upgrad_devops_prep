@@ -1,0 +1,235 @@
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+body{
+  width: 100%;
+  font-family: cursive;
+  height: 900px;
+}
+h2{
+
+padding: 9px;
+
+position: relative;
+
+top: 30px;
+
+left: 16px;
+
+width: 304px;
+}
+.sign_out{
+  
+float: right;
+  
+padding: 4px;
+  
+margin: 6px;
+  
+position: relative;
+  
+top: -37px;
+  
+left: -23px;
+  
+background-color: #d49292;
+}
+.divider{
+  margin: 29px;
+  background-color: black;
+  height: .8px;
+  width: 97%;
+}
+.second_level{
+  
+display: flex;
+  
+align-content: center;
+  
+justify-content: center;
+  
+
+}
+.input_value{
+  
+right: 25px;
+  
+width: 508px;
+  
+position: relative;
+  
+height: 30px;
+  
+border-radius: 22px;
+  
+padding: 13px;
+}
+.table{width: 80%;}
+
+
+td, th {
+
+  text-align: left;
+  padding: 8px;
+}
+
+
+.buttonOut{
+  position: relative;
+  left: 11px;
+  top: 9px;
+  background-color: #d49292;
+}
+.fas{
+color: #aa3636;
+width: 15px;
+}
+.addContent{
+  background-color: #d49292;
+}
+
+.carInfo{
+    
+width: 514px;
+    
+display: flex;
+    
+height: 299px;
+    
+flex-flow: wrap;
+    
+position: relative;
+    
+left: 89px;
+    
+top: 47px;
+}
+
+#form{
+    display: flex;
+    flex-wrap: wrap;
+}
+.form-field{
+    height: 41px;
+    width: 227.9px;
+}
+select{
+    
+position: relative;
+    
+top: 22px;
+    
+left: -97px;
+    
+width: 123px;
+}
+.head{
+
+position: relative;
+
+top: 11px;
+
+left: 75px;
+
+text-align: -webkit-right;
+}
+.popCheckIn{
+position: relative;
+left: 36%;
+top: 206px;
+width: 37%;
+border: solid 1px;
+border-radius: 8px;
+/*  */
+}
+.submit{
+  color: #aa3636;
+  background-color: #d49292;
+  display: flex;
+  float: right;
+  border: solid 2px;
+}
+.vehicleShow{
+  float: right;
+  width: 94%;
+}
+
+.popupCheckOut{
+  position: relative;
+  top: -37px;
+}
+.popCheckOut2{
+  float: left;
+}
+.Payment{
+
+position: relative;
+
+top: 273px;
+
+right: -39%;
+}
+.afterCheckOut{
+  position: relative;
+  left: 31%;
+  top: 96px;
+  border-radius: 10px;
+  border: solid 1px;
+  width: 39%;
+  height: 422px;
+}
+.POP{
+  display: flex;
+  flex-flow: column;
+}
+.CheckOOO{
+  
+direction: rtl;
+}
+
+
+.Pro{
+  
+  position: relative;
+  color: #aa3636;
+  background-color: #d49292;
+  right: 22px;
+}
+.successful{
+  
+display: inline-grid;
+position: relative;
+  
+top: -16px;
+  
+align-content: space-evenly;
+  
+padding: 21px;
+  
+border: solid 1px;
+  
+background-color: white;
+  
+width: 435px;
+  
+height: 295px;
+  
+border-radius: 25px;
+}
+.PaymentDone{
+  position: relative;
+  left: 37%;
+  top: 150px;
+}
+
+.closeButton{
+  color: #aa3636;
+  background-color: #d49292;
+  position: relative;
+  top: 63%;
+  left: 1%;
+  width: 96%;
+  height: 39px;
+}
