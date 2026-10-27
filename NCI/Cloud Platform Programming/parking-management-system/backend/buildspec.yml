@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt
+      
+  pre_build:
+    commands:
+      - echo "Running tests..."
+      - python manage.py test
+      - echo "Running security checks..."
+      
+  build:
+    commands:
+      - echo "Building the application..."
+      - python manage.py collectstatic --noinput
+      
+  post_build:
+    commands:
+      - echo "Build completed on `date`"
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: '.'

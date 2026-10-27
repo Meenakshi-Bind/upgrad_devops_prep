@@ -1,0 +1,13 @@
+1. Install dev environment
+sudo apt update
+sudo apt install python3.14 python3.14-venv
+python3.14 -m venv ~/mqtt_env
+source ~/mqtt_env/bin/activate
+
+2. Install MQTT software
+python -m pip install --upgrade pip
+python -m pip install amqtt
+
+3. Find code at
+https://github.com/Yakifo/amqtt/blob/main/samples/
+

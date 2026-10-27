@@ -16,3 +16,9 @@ provider "aws" {
   # Configuration options
   region = "us-east-1"
 }
+
+
+# Simple S3 bucket creation
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "terraform-store-tf-try"
+}

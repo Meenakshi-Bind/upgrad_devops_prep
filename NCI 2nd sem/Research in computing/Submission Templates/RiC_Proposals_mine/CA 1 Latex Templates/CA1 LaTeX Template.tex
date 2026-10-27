@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+
+\title{ Improving Deployment Consistency of Cloud-Based Services: Manual Provisioning versus Terraform Automation}
+\author{Meenakshi \\ 24235415 \\ Programme Code - Research in Computing CA1 \\ National College of Ireland}
+\date{}
+
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+\section{Research Problem Background}
+Cloud computing has become the backbone of modern digital services, enabling organizations to deploy scalable applications across distributed environments. One of the major challenges in cloud service management is ensuring \textbf{deployment consistency}—the ability to reliably reproduce the same infrastructure configuration across multiple environments, such as development, testing, and production.
+
+Traditionally, cloud infrastructure has been provisioned manually through provider consoles like AWS Management Console or Azure Portal. While manual provisioning may seem straightforward for small deployments, it often leads to configuration drift, human errors, and inconsistent infrastructure setups. These inconsistencies can cause service outages, security vulnerabilities, and increased operational costs \cite{kasarla2025implementing}.
+
+In recent years, \textbf{Infrastructure as Code (IaC)} tools such as Terraform have emerged as a solution to these challenges. Terraform allows infrastructure to be defined in declarative configuration files, enabling automation, version control, repeatability, and faster recovery from failures \cite{pohjola2025mitigating}. Despite Terraform’s increasing adoption, many organizations still rely on manual provisioning due to lack of expertise or perceived complexity. Therefore, it is important to investigate whether Terraform automation significantly improves deployment consistency compared to manual provisioning approaches.
+
+
+\section{Research Question}
+To what extent does Terraform-based infrastructure automation improve deployment consistency, reliability, and error reduction in cloud-based service provisioning compared to manual provisioning methods?
+
+\section{Justification}
+This research question is significant because deployment inconsistency remains a major issue in cloud operations, especially for organizations adopting DevOps practices. Manual provisioning introduces risks such as:
+
+\begin{itemize}
+    \item Unintentional configuration differences
+    \item Increased deployment time
+    \item Difficulty in reproducing environments
+    \item Higher likelihood of human error
+\end{itemize}
+Terraform automation may address these problems by offering:
+
+\begin{itemize}
+    \item Repeatable deployments
+    \item Standardized infrastructure definitions
+    \item Reduced configuration drift
+    \item Improved operational efficiency
+\end{itemize}
+This research is worth investigating as it contributes to the growing field of cloud infrastructure automation and helps organizations make informed decisions about adopting IaC practices.
+
+\section{Specific Items to Be Addressed}
+This study will focus on the following key investigation areas:
+
+\begin{enumerate}
+    \item \textbf{Manual Provisioning Challenges}
+
+ Examining common issues such as inconsistency, drift, and error rates when infrastructure is created manually.
+    \item \textbf{Terraform Automation Benefits}
+
+ Evaluating how Terraform improves repeatability, scalability, and infrastructure standardization.
+    \item \textbf{Experimental Deployment Comparison}
+
+ Deploying identical cloud-based services using both methods and comparing outcomes based on performance metrics.
+    \item \textbf{Consistency Measurement Metrics}
+
+ Defining measurable indicators such as configuration reproducibility, time efficiency, and failure frequency.
+    \item \textbf{Impact on DevOps Practices}
+
+ Assessing Terraform’s role in CI/CD pipelines and modern DevOps workflows.
+    \item \textbf{Recommendations for Cloud Organizations}
+
+ Providing best-practice guidance for organizations transitioning from manual provisioning to IaC automation.
+\end{enumerate}
+
+
+
+\bibliographystyle{agsm}
+\bibliography{CA1References}
+\end{document}
