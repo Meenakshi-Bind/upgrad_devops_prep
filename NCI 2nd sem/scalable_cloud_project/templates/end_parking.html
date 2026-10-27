@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>End Parking Session</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h5>Parking Session Details</h5>
+                    <p><strong>Vehicle:</strong> {{ session.vehicle.license_plate }}</p>
+                    <p><strong>Parking Lot:</strong> {{ session.parking_lot.name }}</p>
+                    <p><strong>Check-in Time:</strong> {{ session.check_in_time|date:"M d, Y H:i" }}</p>
+                    <p><strong>Current Duration:</strong> {{ session.check_in_time|timesince }}</p>
+                    <p><strong>Estimated Cost:</strong> ${{ session.calculate_cost|floatformat:2 }}</p>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <p class="text-center">Are you sure you want to end this parking session?</p>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning">Yes, End Parking</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

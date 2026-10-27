@@ -32,3 +32,10 @@ NCI/Cloud Platform Programming/secondLAB/practise
 Practise/__pycache__/openai.cpython-311.pyc
 .DS_Store*
 LICENSE.txt*
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+EOF

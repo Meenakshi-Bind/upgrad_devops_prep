@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>My Vehicles</h4>
+    <a href="{% url 'vehicle_create' %}" class="btn btn-success">Add New Vehicle</a>
+</div>
+
+{% if vehicles %}
+<div class="row">
+    {% for vehicle in vehicles %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ vehicle.license_plate }}</h5>
+                <p class="card-text">
+                    <strong>Type:</strong> {{ vehicle.get_vehicle_type_display }}<br>
+                    <strong>Make/Model:</strong> {{ vehicle.make }} {{ vehicle.model }}<br>
+                    <strong>Color:</strong> {{ vehicle.color }}
+                </p>
+                <div class="btn-group">
+                    <a href="{% url 'vehicle_update' vehicle.id %}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{% url 'vehicle_delete' vehicle.id %}" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <h5 class="text-muted">No vehicles registered yet</h5>
+    <p>Add your first vehicle to start parking!</p>
+    <a href="{% url 'vehicle_create' %}" class="btn btn-primary">Add First Vehicle</a>
+</div>
+{% endif %}
+{% endblock %}

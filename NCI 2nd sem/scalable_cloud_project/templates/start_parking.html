@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Start New Parking Session</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.vehicle.id_for_label }}" class="form-label">Select Vehicle</label>
+                        {{ form.vehicle }}
+                        {% if form.vehicle.errors %}
+                            <div class="text-danger">{{ form.vehicle.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.parking_lot.id_for_label }}" class="form-label">Select Parking Lot</label>
+                        {{ form.parking_lot }}
+                        {% if form.parking_lot.errors %}
+                            <div class="text-danger">{{ form.parking_lot.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">
+                            Shows only parking lots with available spaces
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Start Parking</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        {% if not form.parking_lot.field.queryset %}
+        <div class="alert alert-warning mt-3">
+            <strong>No parking lots available!</strong> All parking lots are currently full.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

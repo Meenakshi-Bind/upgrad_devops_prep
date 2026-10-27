@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Available Parking Lots</h4>
+    </div>
+    <div class="card-body">
+        {% if lots %}
+        <div class="row">
+            {% for lot in lots %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ lot.name }}</h5>
+                        <p class="card-text">
+                            <strong>Location:</strong> {{ lot.location }}<br>
+                            <strong>Hourly Rate:</strong> ${{ lot.hourly_rate }}<br>
+                            <strong>Spaces:</strong> 
+                            <span class="badge {% if lot.available_spaces > 10 %}bg-success{% elif lot.available_spaces > 0 %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ lot.available_spaces }} / {{ lot.total_spaces }} available
+                            </span>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        {% if lot.available_spaces > 0 %}
+                            <a href="{% url 'start_parking' %}" class="btn btn-primary btn-sm">Park Here</a>
+                        {% else %}
+                            <button class="btn btn-secondary btn-sm" disabled>Full</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <h5 class="text-muted">No parking lots available</h5>
+            <p>Please check back later or contact administrator.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

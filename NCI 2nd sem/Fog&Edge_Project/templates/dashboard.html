@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Chair Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card, .chart-card, .table-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .card .value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .bottom-charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card h2,
+        .table-card h2 {
+            margin: 0 0 14px;
+            font-size: 18px;
+        }
+
+        .table-card {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        thead {
+            background: #111827;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-inactive {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-alert {
+            background: #fee2e2;
+            color: #991b1b;
+            margin-right: 6px;
+            margin-bottom: 4px;
+        }
+
+        .muted {
+            color: #6b7280;
+        }
+
+        @media (max-width: 950px) {
+            .charts,
+            .bottom-charts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Smart Chair Health Dashboard</h1>
+        <p>Posture, inactivity, heart rate, seat pressure, and temperature monitoring</p>
+    </div>
+
+    <div class="stats">
+        <div class="card">
+            <h3>Total Records</h3>
+            <div class="value" id="totalRecords">0</div>
+        </div>
+        <div class="card">
+            <h3>Avg Seat Pressure</h3>
+            <div class="value" id="avgPressure">0</div>
+        </div>
+        <div class="card">
+            <h3>Avg Heart Rate</h3>
+            <div class="value" id="avgHeart">0</div>
+        </div>
+        <div class="card">
+            <h3>Avg Temperature</h3>
+            <div class="value" id="avgTemp">0</div>
+        </div>
+        <div class="card">
+            <h3>Bad Posture Alerts</h3>
+            <div class="value" id="badPostureCount">0</div>
+        </div>
+        <div class="card">
+            <h3>Inactive Readings</h3>
+            <div class="value" id="inactiveCount">0</div>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart-card">
+            <h2>Sensor Trends</h2>
+            <canvas id="trendChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h2>Movement Status</h2>
+            <canvas id="movementChart"></canvas>
+        </div>
+    </div>
+
+    <div class="bottom-charts">
+        <div class="chart-card">
+            <h2>Average Sensor Values</h2>
+            <canvas id="avgChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h2>Posture Alert Overview</h2>
+            <canvas id="alertChart"></canvas>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <h2>Latest Sensor Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chair ID</th>
+                    <th>Timestamp</th>
+                    <th>Seat Pressure</th>
+                    <th>Posture Angle</th>
+                    <th>Heart Rate</th>
+                    <th>Temperature</th>
+                    <th>Movement</th>
+                    <th>Alerts</th>
+                </tr>
+            </thead>
+            <tbody id="sensorTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let trendChart;
+    let movementChart;
+    let avgChart;
+    let alertChart;
+
+    function initCharts() {
+        trendChart = new Chart(document.getElementById("trendChart"), {
+            type: "line",
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Seat Pressure",
+                        data: [],
+                        borderColor: "#2563eb",
+                        backgroundColor: "rgba(37,99,235,0.12)",
+                        tension: 0.3
+                    },
+                    {
+                        label: "Posture Angle",
+                        data: [],
+                        borderColor: "#dc2626",
+                        backgroundColor: "rgba(220,38,38,0.12)",
+                        tension: 0.3
+                    },
+                    {
+                        label: "Heart Rate",
+                        data: [],
+                        borderColor: "#059669",
+                        backgroundColor: "rgba(5,150,105,0.12)",
+                        tension: 0.3
+                    },
+                    {
+                        label: "Temperature",
+                        data: [],
+                        borderColor: "#d97706",
+                        backgroundColor: "rgba(217,119,6,0.12)",
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        ticks: { display: false }
+                    }
+                }
+            }
+        });
+
+        movementChart = new Chart(document.getElementById("movementChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Active", "Inactive"],
+                datasets: [{
+                    data: [0, 0],
+                    backgroundColor: ["#22c55e", "#f59e0b"]
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        avgChart = new Chart(document.getElementById("avgChart"), {
+            type: "bar",
+            data: {
+                labels: ["Seat Pressure", "Posture Angle", "Heart Rate", "Temperature"],
+                datasets: [{
+                    label: "Average Value",
+                    data: [0, 0, 0, 0],
+                    backgroundColor: ["#2563eb", "#dc2626", "#059669", "#d97706"]
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        alertChart = new Chart(document.getElementById("alertChart"), {
+            type: "pie",
+            data: {
+                labels: ["Bad Posture", "Normal"],
+                datasets: [{
+                    data: [0, 0],
+                    backgroundColor: ["#ef4444", "#10b981"]
+                }]
+            },
+            options: { responsive: true }
+        });
+    }
+
+    function createAlertBadges(alerts) {
+        if (!alerts || alerts.length === 0) {
+            return '<span class="muted">No alerts</span>';
+        }
+
+        return alerts.map(a => `<span class="badge badge-alert">${a}</span>`).join(" ");
+    }
+
+    function createMovementBadge(movement) {
+        if (movement === true || movement === "true" || movement === "True") {
+            return '<span class="badge badge-active">Active</span>';
+        }
+        return '<span class="badge badge-inactive">Inactive</span>';
+    }
+
+    async function updateDashboard() {
+        const response = await fetch("/api/data");
+        const data = await response.json();
+
+        let labels = [];
+        let seatPressureData = [];
+        let postureData = [];
+        let heartRateData = [];
+        let temperatureData = [];
+
+        let totalPressure = 0;
+        let totalHeart = 0;
+        let totalTemp = 0;
+        let totalPosture = 0;
+
+        let inactiveCount = 0;
+        let badPostureCount = 0;
+
+        const tableBody = document.getElementById("sensorTableBody");
+        tableBody.innerHTML = "";
+
+        [...data].reverse().forEach(d => {
+            labels.push(d.timestamp || "");
+            seatPressureData.push(d.seat_pressure || 0);
+            postureData.push(d.posture_angle || 0);
+            heartRateData.push(d.heart_rate || 0);
+            temperatureData.push(d.temperature || 0);
+
+            totalPressure += Number(d.seat_pressure || 0);
+            totalHeart += Number(d.heart_rate || 0);
+            totalTemp += Number(d.temperature || 0);
+            totalPosture += Number(d.posture_angle || 0);
+
+            if (!(d.movement === true || d.movement === "true" || d.movement === "True")) {
+                inactiveCount++;
+            }
+
+            if (d.alerts && d.alerts.includes("Bad posture")) {
+                badPostureCount++;
+            }
+
+            const row = `
+                <tr>
+                    <td>${d.chair_id || "-"}</td>
+                    <td>${d.timestamp || "-"}</td>
+                    <td>${d.seat_pressure ?? "-"}</td>
+                    <td>${d.posture_angle ?? "-"}</td>
+                    <td>${d.heart_rate ?? "-"}</td>
+                    <td>${d.temperature ?? "-"}</td>
+                    <td>${createMovementBadge(d.movement)}</td>
+                    <td>${createAlertBadges(d.alerts)}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+
+        const total = data.length;
+        const activeCount = total - inactiveCount;
+        const normalCount = total - badPostureCount;
+
+        document.getElementById("totalRecords").textContent = total;
+        document.getElementById("avgPressure").textContent = total ? (totalPressure / total).toFixed(1) : 0;
+        document.getElementById("avgHeart").textContent = total ? (totalHeart / total).toFixed(1) : 0;
+        document.getElementById("avgTemp").textContent = total ? (totalTemp / total).toFixed(1) : 0;
+        document.getElementById("badPostureCount").textContent = badPostureCount;
+        document.getElementById("inactiveCount").textContent = inactiveCount;
+
+        trendChart.data.labels = labels.reverse();
+        trendChart.data.datasets[0].data = seatPressureData.reverse();
+        trendChart.data.datasets[1].data = postureData.reverse();
+        trendChart.data.datasets[2].data = heartRateData.reverse();
+        trendChart.data.datasets[3].data = temperatureData.reverse();
+        trendChart.update();
+
+        movementChart.data.datasets[0].data = [activeCount, inactiveCount];
+        movementChart.update();
+
+        avgChart.data.datasets[0].data = [
+            total ? (totalPressure / total).toFixed(1) : 0,
+            total ? (totalPosture / total).toFixed(1) : 0,
+            total ? (totalHeart / total).toFixed(1) : 0,
+            total ? (totalTemp / total).toFixed(1) : 0
+        ];
+        avgChart.update();
+
+        alertChart.data.datasets[0].data = [badPostureCount, normalCount];
+        alertChart.update();
+    }
+
+    initCharts();
+    updateDashboard();
+    setInterval(updateDashboard, 5000);
+</script>
+</body>
+</html>

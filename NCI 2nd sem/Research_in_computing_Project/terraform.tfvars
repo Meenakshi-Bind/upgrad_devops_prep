@@ -1,0 +1,5 @@
+aws_region    = "us-east-1"
+ami_id        = "ami-0ec10929233384c7f"
+instance_type = "t2.micro"
+sg_name       = "terraform-sg-trial1"
+instance_name = "terraform-ec2-trial1"

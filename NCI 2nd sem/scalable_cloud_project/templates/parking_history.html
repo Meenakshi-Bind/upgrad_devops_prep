@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Parking History</h4>
+    </div>
+    <div class="card-body">
+        {% if sessions %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Vehicle</th>
+                        <th>Parking Lot</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Duration</th>
+                        <th>Cost</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in sessions %}
+                    <tr>
+                        <td>{{ session.vehicle.license_plate }}</td>
+                        <td>{{ session.parking_lot.name }}</td>
+                        <td>{{ session.check_in_time|date:"M d, Y H:i" }}</td>
+                        <td>
+                            {% if session.check_out_time %}
+                                {{ session.check_out_time|date:"M d, Y H:i" }}
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if session.check_out_time %}
+                                {{ session.check_in_time|timesince:session.check_out_time }}
+                            {% else %}
+                                {{ session.check_in_time|timesince }}
+                            {% endif %}
+                        </td>
+                        <td>${{ session.total_cost|floatformat:2 }}</td>
+                        <td>
+                            {% if session.status == 'ACTIVE' %}
+                                <span class="badge bg-warning">Active</span>
+                            {% elif session.status == 'COMPLETED' %}
+                                <span class="badge bg-success">Completed</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ session.status }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <h5 class="text-muted">No parking history yet</h5>
+            <p>Start your first parking session from the dashboard!</p>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
